@@ -5,9 +5,10 @@ import { useReward } from "react-rewards";
 import FrontImage from "../assets/scratch.webp";
 import BackImage from "../assets/afterscratch.webp";
 
-const scratchRadius = 20;
+const scratchRadius = 24;
 const lineWidth = 10;
-let lastCalculationTime = 0;
+// let lastCalculationTime = 0;
+let debounceTimeout;
 
 // eslint-disable-next-line react/prop-types
 const ScratchPad = ({ scratchMessage }) => {
@@ -56,8 +57,6 @@ const ScratchPad = ({ scratchMessage }) => {
       const ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     };
-
-    // Rest of your code...
   }, []);
 
   const handleMouseDown = () => {
@@ -106,9 +105,13 @@ const ScratchPad = ({ scratchMessage }) => {
     ctx.arc(x, y, scratchRadius, 0, 2 * Math.PI);
     ctx.fill();
 
-    if (Date.now() - lastCalculationTime >= 100) {
-      console.log(lastCalculationTime);
-      lastCalculationTime = Date.now();
+    // Clear any previously scheduled debounce
+    clearTimeout(debounceTimeout);
+
+    // Schedule the function to execute after a delay
+    debounceTimeout = setTimeout(() => {
+      console.log(canvas.width);
+
       const imageData = ctx.getImageData(
         0,
         0,
@@ -124,13 +127,12 @@ const ScratchPad = ({ scratchMessage }) => {
       const totalPixels = transparentPixels.length;
       const areaPercent = (transparentPixelCount / totalPixels) * 100;
       setScratchedArea(areaPercent);
-      console.log(areaPercent);
+
       if (areaPercent >= 50) {
         console.log("test");
         reward();
-        // reward();
       }
-    }
+    }, 100); // Adjust the delay as needed (e.g., 100 milliseconds)
   };
 
   return (
@@ -159,7 +161,7 @@ const ScratchPad = ({ scratchMessage }) => {
                 alt="Price Img"
                 className="w-100 h-100 rounded-4"
               />
-              <div className="reward-text position-absolute w-100 h-100 top-0 d-flex flex-column align-items-center justify-content-center">
+              <div className="reward-text position-absolute w-100 h-100 top-0 start-0 d-flex flex-column align-items-center justify-content-center">
                 <h3 className="fw-bold text-uppercase m-0">
                   {scratchMessage ? (
                     <span>{scratchMessage}</span>
