@@ -7,7 +7,8 @@ import BackImage from "../assets/afterscratch.webp";
 
 const scratchRadius = 24;
 const lineWidth = 10;
-let lastCalculationTime = 0;
+// let lastCalculationTime = 0;
+let debounceTimeout;
 
 // eslint-disable-next-line react/prop-types
 const ScratchPad = ({ scratchMessage }) => {
@@ -104,9 +105,12 @@ const ScratchPad = ({ scratchMessage }) => {
     ctx.arc(x, y, scratchRadius, 0, 2 * Math.PI);
     ctx.fill();
 
-    if (Date.now() - lastCalculationTime >= 100) {
-      console.log(lastCalculationTime);
-      lastCalculationTime = Date.now();
+    // Clear any previously scheduled debounce
+    clearTimeout(debounceTimeout);
+
+    // Schedule the function to execute after a delay
+    debounceTimeout = setTimeout(() => {
+
       const imageData = ctx.getImageData(
         0,
         0,
@@ -122,12 +126,12 @@ const ScratchPad = ({ scratchMessage }) => {
       const totalPixels = transparentPixels.length;
       const areaPercent = (transparentPixelCount / totalPixels) * 100;
       setScratchedArea(areaPercent);
-      console.log(areaPercent);
-      if (areaPercent >= 50 ) {
+
+      if (areaPercent >= 50) {
         console.log("test");
         reward();
       }
-    }
+    }, 100); // Adjust the delay as needed (e.g., 100 milliseconds)
   };
 
   return (
@@ -149,7 +153,7 @@ const ScratchPad = ({ scratchMessage }) => {
             style={{ display: scratchedArea >= 50 ? "none" : "block" }}
           ></canvas>
 
-          {scratchedArea >= 2 && (
+          {/* {scratchedArea >= 2 && ( */}
             <Card className="ScratchCard__Result w-100 h-100 cursor-grabbing shadow border-0 position-relative rounded-4">
               <img
                 src={BackImage}
@@ -164,7 +168,7 @@ const ScratchPad = ({ scratchMessage }) => {
                     <> ! you win !</>
                   )}
                 </h3>
-                {!scratchMessage && (
+                {scratchMessage && (
                   <h2
                     className="fw-bold text-uppercase m-0"
                     style={{ color: "red" }}
@@ -174,7 +178,7 @@ const ScratchPad = ({ scratchMessage }) => {
                 )}
               </div>
             </Card>
-          )}
+          {/* )} */}
         </div>
         <h3 className="mt-3 text-white fade-in-text">
           Scratch & Win <br /> Upto ₹20{" "}
