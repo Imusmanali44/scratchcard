@@ -103,7 +103,7 @@ const ScratchPad = ({ scratchMessage }) => {
     ctx.beginPath();
     ctx.arc(x, y, scratchRadius, 0, 2 * Math.PI);
     ctx.fill();
-
+    setScratchedArea(2);
     // Clear any previously scheduled debounce
     clearTimeout(debounceTimeout);
 
@@ -151,32 +151,32 @@ const ScratchPad = ({ scratchMessage }) => {
             style={{ display: scratchedArea >= 50 ? "none" : "block" }}
           ></canvas>
 
-          {/* {scratchedArea >= 2 && ( */}
-          <Card className="ScratchCard__Result w-100 h-100 cursor-grabbing shadow border-0 position-relative rounded-4">
-            <img
-              src={BackImage}
-              alt="Price Img"
-              className="w-100 h-100 rounded-4"
-            />
-            <div className="reward-text position-absolute w-100 h-100 top-0 start-0 d-flex flex-column align-items-center justify-content-center">
-              <h3 className="fw-bold text-uppercase m-0">
-                {scratchMessage ? (
-                  <span>{scratchMessage}</span>
-                ) : (
-                  <> ! you win !</>
+          {scratchedArea >= 2 && (
+            <Card className="ScratchCard__Result w-100 h-100 cursor-grabbing shadow border-0 position-relative rounded-4">
+              <img
+                src={BackImage}
+                alt="Price Img"
+                className="w-100 h-100 rounded-4"
+              />
+              <div className="reward-text position-absolute w-100 h-100 top-0 start-0 d-flex flex-column align-items-center justify-content-center">
+                <h3 className="fw-bold text-uppercase m-0">
+                  {scratchMessage ? (
+                    <span>{scratchMessage}</span>
+                  ) : (
+                    <> ! you win !</>
+                  )}
+                </h3>
+                {scratchMessage && (
+                  <h2
+                    className="fw-bold text-uppercase m-0"
+                    style={{ color: "red" }}
+                  >
+                    ₹ 2
+                  </h2>
                 )}
-              </h3>
-              {scratchMessage && (
-                <h2
-                  className="fw-bold text-uppercase m-0"
-                  style={{ color: "red" }}
-                >
-                  ₹ 2
-                </h2>
-              )}
-            </div>
-          </Card>
-          {/* )} */}
+              </div>
+            </Card>
+          )}
         </div>
         <h3 className="mt-3 text-white fade-in-text">
           Scratch & Win <br /> Upto ₹20{" "}
