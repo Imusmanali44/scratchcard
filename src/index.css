@@ -92,6 +92,10 @@ button:focus-visible {
   cursor: grabbing;
 }
 
+.ScratchCard__Canvas {
+  will-change: transform;
+}
+
 @keyframes identifier {
   0% {
     transform: rotate(0);

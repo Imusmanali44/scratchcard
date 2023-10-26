@@ -107,6 +107,7 @@ const ScratchPad = ({ scratchMessage }) => {
     ctx.fill();
 
     if (Date.now() - lastCalculationTime >= 100) {
+      console.log(lastCalculationTime);
       lastCalculationTime = Date.now();
       const imageData = ctx.getImageData(
         0,
@@ -123,9 +124,11 @@ const ScratchPad = ({ scratchMessage }) => {
       const totalPixels = transparentPixels.length;
       const areaPercent = (transparentPixelCount / totalPixels) * 100;
       setScratchedArea(areaPercent);
+      console.log(areaPercent);
       if (areaPercent >= 50) {
+        console.log("test");
         reward();
-        reward();
+        // reward();
       }
     }
   };
@@ -148,7 +151,7 @@ const ScratchPad = ({ scratchMessage }) => {
             className="ScratchCard__Canvas position-absolute top-0 z-3 start-0 rounded-4 shadow"
             style={{ display: scratchedArea >= 50 ? "none" : "block" }}
           ></canvas>
-          
+
           {scratchedArea >= 2 && (
             <Card className="ScratchCard__Result w-100 h-100 cursor-grabbing shadow border-0 position-relative rounded-4">
               <img
