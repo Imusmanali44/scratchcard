@@ -7,8 +7,7 @@ import BackImage from "../assets/afterscratch.webp";
 
 const scratchRadius = 24;
 const lineWidth = 10;
-// let lastCalculationTime = 0;
-let debounceTimeout;
+let lastCalculationTime = 0;
 
 // eslint-disable-next-line react/prop-types
 const ScratchPad = ({ scratchMessage }) => {
@@ -105,13 +104,9 @@ const ScratchPad = ({ scratchMessage }) => {
     ctx.arc(x, y, scratchRadius, 0, 2 * Math.PI);
     ctx.fill();
 
-    // Clear any previously scheduled debounce
-    clearTimeout(debounceTimeout);
-
-    // Schedule the function to execute after a delay
-    debounceTimeout = setTimeout(() => {
-      console.log(canvas.width);
-
+    if (Date.now() - lastCalculationTime >= 100) {
+      console.log(lastCalculationTime);
+      lastCalculationTime = Date.now();
       const imageData = ctx.getImageData(
         0,
         0,
@@ -127,12 +122,12 @@ const ScratchPad = ({ scratchMessage }) => {
       const totalPixels = transparentPixels.length;
       const areaPercent = (transparentPixelCount / totalPixels) * 100;
       setScratchedArea(areaPercent);
-
-      if (areaPercent >= 50) {
+      console.log(areaPercent);
+      if (areaPercent >= 50 ) {
         console.log("test");
         reward();
       }
-    }, 100); // Adjust the delay as needed (e.g., 100 milliseconds)
+    }
   };
 
   return (
