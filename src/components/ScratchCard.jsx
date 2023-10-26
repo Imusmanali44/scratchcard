@@ -5,9 +5,8 @@ import { useReward } from "react-rewards";
 import FrontImage from "../assets/scratch.webp";
 import BackImage from "../assets/afterscratch.webp";
 
-const scratchRadius = 24;
+const scratchRadius = 30;
 const lineWidth = 10;
-// let lastCalculationTime = 0;
 let debounceTimeout;
 
 // eslint-disable-next-line react/prop-types
@@ -110,7 +109,6 @@ const ScratchPad = ({ scratchMessage }) => {
 
     // Schedule the function to execute after a delay
     debounceTimeout = setTimeout(() => {
-
       const imageData = ctx.getImageData(
         0,
         0,
@@ -131,11 +129,11 @@ const ScratchPad = ({ scratchMessage }) => {
         console.log("test");
         reward();
       }
-    }, 100); // Adjust the delay as needed (e.g., 100 milliseconds)
+    }, 100);
   };
 
   return (
-    <div className="d-flex align-items-center h-100">
+    <div className="d-flex align-items-center" style={{ height: "100dvh" }}>
       <div className="m-auto" onClick={(e) => e.stopPropagation()}>
         <div
           ref={containerRef}
@@ -154,30 +152,30 @@ const ScratchPad = ({ scratchMessage }) => {
           ></canvas>
 
           {/* {scratchedArea >= 2 && ( */}
-            <Card className="ScratchCard__Result w-100 h-100 cursor-grabbing shadow border-0 position-relative rounded-4">
-              <img
-                src={BackImage}
-                alt="Price Img"
-                className="w-100 h-100 rounded-4"
-              />
-              <div className="reward-text position-absolute w-100 h-100 top-0 start-0 d-flex flex-column align-items-center justify-content-center">
-                <h3 className="fw-bold text-uppercase m-0">
-                  {scratchMessage ? (
-                    <span>{scratchMessage}</span>
-                  ) : (
-                    <> ! you win !</>
-                  )}
-                </h3>
-                {scratchMessage && (
-                  <h2
-                    className="fw-bold text-uppercase m-0"
-                    style={{ color: "red" }}
-                  >
-                    ₹ 2
-                  </h2>
+          <Card className="ScratchCard__Result w-100 h-100 cursor-grabbing shadow border-0 position-relative rounded-4">
+            <img
+              src={BackImage}
+              alt="Price Img"
+              className="w-100 h-100 rounded-4"
+            />
+            <div className="reward-text position-absolute w-100 h-100 top-0 start-0 d-flex flex-column align-items-center justify-content-center">
+              <h3 className="fw-bold text-uppercase m-0">
+                {scratchMessage ? (
+                  <span>{scratchMessage}</span>
+                ) : (
+                  <> ! you win !</>
                 )}
-              </div>
-            </Card>
+              </h3>
+              {scratchMessage && (
+                <h2
+                  className="fw-bold text-uppercase m-0"
+                  style={{ color: "red" }}
+                >
+                  ₹ 2
+                </h2>
+              )}
+            </div>
+          </Card>
           {/* )} */}
         </div>
         <h3 className="mt-3 text-white fade-in-text">
